@@ -1,7 +1,6 @@
-import logo from "./logo.svg";
 import "./App.css";
-import { Button } from "@mui/material";
-import DataTable from "./DataTable";
+import DataTable from "./components/DataTable";
+
 function App() {
   return (
     <div className="App">
