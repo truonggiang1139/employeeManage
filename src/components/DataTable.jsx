@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import { Button, IconButton, TextField, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -7,7 +7,7 @@ import FormDialog from "./FormDialog";
 import { toast, ToastContainer } from "react-toastify";
 import ConfirmDialog from "./ConfirmDialog";
 import { newEmployee } from "../fakeData";
-import { getEmployeeData } from "./employeeService";
+import { getEmployeeData, searchEmployee } from "./employeeService";
 import "react-toastify/dist/ReactToastify.css";
 import Table from "./Table";
 
@@ -16,52 +16,7 @@ export default function DataTable() {
   const [employee, setEmployee] = useState({});
   const [employees, setEmployees] = useState([]);
   const [openConfirm, setOpenConfirm] = useState(false);
-  const handleAdd = () => {
-    setOpen(true);
-    setEmployee(newEmployee);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  useEffect(() => {
-    const getData = async () => {
-      const res = await getEmployeeData();
-      setEmployees(res.data.data);
-    };
-    getData();
-  }, []);
-
-  const handleDelete = (data) => {
-    setEmployee(data);
-    setOpenConfirm(true);
-  };
-  const handleCloseConfirm = () => {
-    setOpenConfirm(false);
-  };
-  const updateTable = async (type) => {
-    switch (type) {
-      case "Add":
-        toast.success("Add Success");
-        break;
-      case "Edit":
-        toast.success("Edit Success");
-        break;
-      case "Delete":
-        toast.success("Delete Success");
-        break;
-      default:
-        break;
-    }
-    const res = await getEmployeeData();
-    setEmployees(res.data.data);
-    setOpen(false);
-    setOpenConfirm(false);
-  };
-  const handleEdit = (data) => {
-    setEmployee(data);
-    setOpen(true);
-  };
+  const inputRef = useRef();
   const columns = useMemo(
     () => [
       {
@@ -115,6 +70,63 @@ export default function DataTable() {
     ],
     []
   );
+  useEffect(() => {
+    const getData = async () => {
+      const res = await getEmployeeData();
+      setEmployees(res.data.data);
+    };
+    getData();
+  }, []);
+
+  const handlePress = async (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+  const handleSearch = async () => {
+    const res = await searchEmployee(inputRef.current.value);
+    setEmployees(res.data.data);
+    inputRef.current.value = "";
+  };
+  const handleAdd = () => {
+    setOpen(true);
+    setEmployee(newEmployee);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleDelete = (data) => {
+    setEmployee(data);
+    setOpenConfirm(true);
+  };
+  const handleCloseConfirm = () => {
+    setOpenConfirm(false);
+  };
+  const updateTable = async (type) => {
+    switch (type) {
+      case "Add":
+        toast.success("Add Success");
+        break;
+      case "Edit":
+        toast.success("Edit Success");
+        break;
+      case "Delete":
+        toast.success("Delete Success");
+        break;
+      default:
+        break;
+    }
+    const res = await getEmployeeData();
+    setEmployees(res.data.data);
+    setOpen(false);
+    setOpenConfirm(false);
+  };
+  const handleEdit = (data) => {
+    setEmployee(data);
+    setOpen(true);
+  };
+
   return (
     <>
       <h1 className="text-lg font-bold mb-24">Employee Management</h1>
@@ -141,10 +153,12 @@ export default function DataTable() {
         <TextField
           size="small"
           label="Search by code or name"
+          inputRef={inputRef}
+          onKeyPress={handlePress}
           InputProps={{
             endAdornment: (
               <InputAdornment position="start">
-                <IconButton>
+                <IconButton onClick={handleSearch}>
                   <SearchIcon />
                 </IconButton>
               </InputAdornment>
