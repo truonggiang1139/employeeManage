@@ -64,7 +64,7 @@ export default function FormDialog(props) {
     <>
       <Dialog open={true} maxWidth={"md"} fullWidth={true}>
         <DialogTitle className="text-sky-600 font-bold">
-          Add Employee
+          {data.id ? "Edit Employee" : "Add Employee"}
         </DialogTitle>
         <ValidatorForm onSubmit={handleSubmit}>
           <DialogContent>

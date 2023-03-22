@@ -15,7 +15,7 @@ export default function ConfirmDialog(props) {
   };
   return (
     <Dialog open={true} maxWidth="md" fullWidth={true}>
-      <DialogTitle>Delete</DialogTitle>
+      <DialogTitle className="text-sky-600 font-bold">Delete</DialogTitle>
       <DialogContent>
         <DialogContentText>You won't able to revert this</DialogContentText>
       </DialogContent>
