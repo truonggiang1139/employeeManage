@@ -1,10 +1,10 @@
 import "./App.css";
-import DataTable from "./components/DataTable";
+import EmployeeManage from "./components/EmployeeManage";
 
 function App() {
   return (
     <div className="App">
-      <DataTable />
+      <EmployeeManage />
     </div>
   );
 }

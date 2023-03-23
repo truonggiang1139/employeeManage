@@ -7,7 +7,7 @@ export const getEmployeeData = () => {
 };
 export const updateEmployee = (employee) => {
   return axios.put(
-    `https://training-api.oceantech.com.vn/cms/employees/${employee.id}`,
+    `http://training-api.oceantech.com.vn/cms/employees/${employee.id}`,
     employee
   );
 };

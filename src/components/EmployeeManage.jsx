@@ -11,7 +11,7 @@ import { getEmployeeData, searchEmployee } from "./employeeService";
 import "react-toastify/dist/ReactToastify.css";
 import Table from "./Table";
 
-export default function DataTable() {
+export default function EmployeeManage() {
   const [open, setOpen] = useState(false);
   const [employee, setEmployee] = useState({});
   const [employees, setEmployees] = useState([]);
